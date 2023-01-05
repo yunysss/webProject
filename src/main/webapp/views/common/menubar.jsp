@@ -1,9 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="com.br.member.model.vo.Member"%>
 <%
+	String contextPath = request.getContextPath(); // "/web"
+
 	Member loginUser = (Member)session.getAttribute("loginUser");
 	// 로그인 시도 전 menubar.jsp 로딩시 : null
 	// 로그인 성공 후 menubar.jsp 로딩시 : 로그인한 회원의 정보가 담겨있는 Member객체
+	
+	String alertMsg = (String)session.getAttribute("alertMsg");
+	// 서비스 요청 전 menubar.jsp 로딩시 : null
+	// 서비스 성공 후 menubar.jsp 로딩시 : alert로 띄워줄 메세지 문구
 %>
 <!DOCTYPE html>
 <html>
@@ -36,8 +42,19 @@
     }
     .menu a:hover{background:darkgray;}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!-- 매페이지마다 include되기 때문에 menubar.jsp에 연결 -->
 </head>
 <body>
+	
+	<% if(alertMsg != null){ %>
+		<script>
+			alert("<%=alertMsg%>"); 
+			// 담긴 값만 가져오기 때문에 문자열처리 해주려면 따옴표 처리해야함
+		</script>
+		<% session.removeAttribute("alertMsg"); %>
+		<!-- 일회성 메세지이기 때문에 session에서 지워줘야함 -->
+	<% } %>
 
 	<h1 align="center">Welcome Boram World</h1>
 
@@ -45,7 +62,7 @@
     
     	<% if(loginUser == null){ %>
         <!-- case1. 로그인 전 -->
-        <form action="<%= request.getContextPath() %>/login.me" method="post">
+        <form action="<%= contextPath %>/login.me" method="post">
             <table>
                 <tr>
                     <th>아이디</th>
@@ -58,18 +75,28 @@
                 <tr>
                     <th colspan="2">
                         <button type="submit">로그인</button>
-                        <button type="button">회원가입</button>
+                        <button type="button" onclick="enrollPage();">회원가입</button>
                     </th>
                 </tr>
             </table>
+            <script>
+            	function enrollPage(){
+            		// location.href = "<%=contextPath%>/views/member/memberEnrollForm.jsp";
+            		// url에 웹 애플리케이션의 디렉토리 구조가 노추로디면 보안에 취약
+            		
+            		location.href = "<%=contextPath%>/enrollForm.me";
+            		// 단순한 페이지 요청에 있어서도 Servlet을 만들어서 처리하자
+            		// 포워딩방식을 통해서 해당 페이지가 보여지게끔 (이때 url에는 서블릿 매핑값만 남아있음)
+            	}
+            </script>
         </form>
 		<% } else{%>
         <!-- case2. 로그인 후 -->
         <div>
             <b><%= loginUser.getUserName() %>님</b>의 방문을 환영합니다 <br><br>
             <div align="center">
-                <a href="">마이페이지</a>
-                <a href="<%= request.getContextPath() %>/logout.me">로그아웃</a>
+                <a href="<%= contextPath %>/myPage.me">마이페이지</a>
+                <a href="<%= contextPath %>/logout.me">로그아웃</a>
             </div>
         </div>
         <% } %>
