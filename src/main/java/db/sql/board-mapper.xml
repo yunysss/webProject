@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+	<entry key="selectListCount">
+		SELECT 
+		       COUNT(*) count
+		  FROM BOARD
+		 WHERE BOARD_TYPE = 1
+		   AND STATUS = 'Y'
+	</entry> 
 	
+	<entry key="selectList">
+		SELECT *
+		  FROM ( <!-- 별칭 반영시키기 위해 다시 인라인뷰 적용 -->
+		        SELECT ROWNUM RNUM, A.* <!-- ROWNUM 그대로 제시하면 1에서부터 시작해야하기 때문에 별칭 부여 -->
+		          FROM (
+		                SELECT
+		                       BOARD_NO
+		                     , CATEGORY_NAME
+		                     , BOARD_TITLE
+		                     , USER_ID
+		                     , COUNT
+		                     , TO_CHAR(CREATE_DATE, 'YYYY/MM/DD') "CREATE_DATE"
+		                  FROM BOARD B
+		                  JOIN CATEGORY USING(CATEGORY_NO)
+		                  JOIN MEMBER ON(BOARD_WRITER = USER_NO)
+		                 WHERE BOARD_TYPE = 1
+		                   AND B.STATUS = 'Y'
+		                 ORDER
+		                    BY BOARD_NO DESC
+		                ) A
+		        )
+		 WHERE RNUM BETWEEN ? AND ?
+	</entry>
 </properties>
