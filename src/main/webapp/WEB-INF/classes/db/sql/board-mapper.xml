@@ -97,7 +97,7 @@
 		     , BOARD_TITLE
 		     , BOARD_CONTENT
 		     , USER_ID
-		     , TO_CHAR(CREATE_DATE, "YYYY/MM/DD") "CREATE_DATE"
+		     , TO_CHAR(CREATE_DATE, 'YYYY/MM/DD') "CREATE_DATE"
 		  FROM BOARD
 		  JOIN CATEGORY USING(CATEGORY_NO)
 		  JOIN MEMBER ON (BOARD_WRITER = USER_NO)
@@ -114,4 +114,41 @@
 		 WHERE REF_BNO = ?
 	</entry>
 	
+	<entry key="updateBoard">
+		UPDATE 
+		       BOARD
+		   SET CATEGORY_NO = ?
+		     , BOARD_TITLE = ?
+		     , BOARD_CONTENT = ?
+		 WHERE BOARD_NO = ?
+	</entry>
+	
+	<entry key="updateAttachment">
+		UPDATE
+		       ATTACHMENT
+		   SET ORIGIN_NAME = ?
+		     , CHANGE_NAME = ?
+		     , FILE_PATH = ?
+		 WHERE FILE_NO = ?
+	</entry>
+	
+	<entry key="insertNewAttachment">
+		INSERT
+		  INTO ATTACHMENT
+		  (
+		    FILE_NO
+		  , REF_BNO
+		  , ORIGIN_NAME
+		  , CHANGE_NAME
+		  , FILE_PATH
+		  )
+		  VALUES
+		  (
+		    SEQ_FNO.NEXTVAL
+		  , ?
+		  , ?
+		  , ?
+		  , ?
+		  )
+	</entry>
 </properties>
