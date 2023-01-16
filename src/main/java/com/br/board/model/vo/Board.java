@@ -11,6 +11,8 @@ public class Board {
 	private int count;
 	private String createDate; // 날짜 String 타입으로 하는법
 	private String status;
+	
+	private String titleImg; // 대표이미지의 경로
 
 	public Board() {}
 
@@ -121,6 +123,14 @@ public class Board {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getTitleImg() {
+		return titleImg;
+	}
+
+	public void setTitleImg(String titleImg) {
+		this.titleImg = titleImg;
 	}
 
 	@Override
