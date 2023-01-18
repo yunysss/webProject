@@ -27,6 +27,10 @@
         display:inline-block;
         margin:14px;
     }
+    .thumbnail:hover{
+    	opacity:0.7;
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -49,6 +53,7 @@
 
 			<% for(Board b : list){ %>
 	            <div class="thumbnail" align="center"> <!-- 반복적으로 만들 요소에 속성을 부여하고자 한다면 class 속성 지정 (id는 고유해야함) -->
+	            	<input type="hidden" value="<%= b.getBoardNo() %>"> <!-- 게시글 번호 숨겨둬서 뽑기 쉽게 -->
 	                <img src="<%= contextPath %>/<%= b.getTitleImg() %>" width="200" height="150">
 	                <p>
 	                    No.<%= b.getBoardNo() %> <%= b.getBoardTitle() %> <br>
@@ -57,6 +62,15 @@
 	            </div>
            <% } %>
         </div>
+        
     </div>
+    
+    <script>
+    	$(function(){
+    		$(".thumbnail").click(function(){
+    			location.href = "<%= contextPath %>/detail.th?no=" + $(this).children('input').val();
+    		})
+    	})
+    </script>
 </body>
 </html>
