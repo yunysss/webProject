@@ -114,5 +114,109 @@
 			});
 		}
 	</script>
+	
+	<h3>2. 버튼 클릭시 post방식으로 서버에 여러개의 데이터 전송 및 응답</h3>
+	이름 : <input type="text" id="input2_1"> <br>
+	나이 : <input type="number" id="input2_2"> <br>
+	<button id="btn2">전송</button> <br>
+	
+	<!-- v1
+	응답 - <label id="output2"></label>
+	
+	<script>
+		$(function(){
+			$("#btn2").click(function(){
+				$.ajax({
+					url:"/web/test2.do",
+					data:{
+						name:$("#input2_1").val(),
+						age:$("#input2_2").val()
+					},
+					type:"post",
+					success:function(a){
+						$("#output2").html(a);
+						$("#input2_1").val("");
+						$("#input2_2").val("");
+					},
+					error:function(){
+						console.log("ajax 통신 실패");
+					}
+				})
+			})
+		})
+	</script> 
+	-->
+	
+	<!-- v2 -->
+	응답
+	<ul id="output2"></ul>
+	
+	<script>
+		$(function(){
+			$("#btn2").click(function(){
+				$.ajax({
+					url:"/web/test2.do",
+					data:{
+						name:$("#input2_1").val(),
+						age:$("#input2_2").val()
+					},
+					type:"post",
+					success:function(a){
+						// 방법1. JSONArray경우
+						/*
+						console.log(a);
+						console.log(a[0]);
+						console.log(a[1]);
+						*/
+						
+						// 방법2. JSONObject경우
+						console.log(a);
+						console.log(a.name);
+						console.log(a.age);
+						
+						const value = "<li>" + a.name + "</li>"
+									+ "<li>" + a.age + "</li>";
+									
+						$("#output2").html(value);
+					},
+					error:function(){
+						console.log("ajax 통신 실패");
+					}
+				})
+			})
+		})
+	</script>
+	
+	<h3>3. 서버에 데이터 전송후, 조회된 vo객체를 응답데이터로</h3>
+	
+	검색하고자하는 회원아이디 : <input type="text" id="input3">
+	<button onclick="test3();">검색</button>
+	
+	<div id="output3"></div>
+	
+	<script>
+		function test3(){
+			$.ajax({
+				url:"/web/test3.do",
+				data:{id:$("#input3").val()},
+				success:function(result){
+					console.log(result); // {key:value, key:value}
+					
+					if(result == null){
+						$("#output3").html("검색 결과가 없습니다.");
+					} else{
+						const value = "회원번호 : " + result.userNo + "<br>"
+									+ "아이디 : " + result.userId + "<br>"
+									+ "이름 : " + result.userName + "<br>";
+						$("#output3").html(value);
+					}
+				},
+				error:function(){
+					console.log("ajax 통신 실패");
+				}
+				
+			})
+		}
+	</script>
 </body>
 </html>
