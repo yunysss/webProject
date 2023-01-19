@@ -218,5 +218,51 @@
 			})
 		}
 	</script>
+	
+	<h3>4. 응답데이터로 조회된 여러 vo객체들이 담겨있는 ArrayList받기</h3>
+	
+	<button onclick="test4();">공지사항 전체조회</button>
+	<br><br>
+	
+	<script>
+		function test4(){
+			$.ajax({
+				url:"/web/test4.do",
+				success:function(result){
+					console.log(result); // [{key:value, ..}, {key:value, ..}, ..]
+					
+					let value = "";
+					for(let i=0; i<result.length; i++){
+						value += "<tr>"
+									+ "<td>" + result[i].noticeNo + "</td>"
+									+ "<td>" + result[i].noticeTitle + "</td>"
+									+ "<td>" + result[i].noticeWriter + "</td>"
+									+ "<td>" + result[i].count + "</td>"
+									+"</tr>";
+					}
+					
+					$("#output4 tbody").html(value);
+					
+				},error:function(){
+					console.log("ajax통신 실패"); 
+				}
+			})
+		}
+	</script>
+	
+	<table id="output4" border="1">
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>조회수</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+	
 </body>
 </html>
