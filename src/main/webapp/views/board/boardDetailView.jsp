@@ -73,7 +73,11 @@
             
             <% if(loginUser != null && loginUser.getUserId().equals(b.getBoardWriter())){ %>
 	            <a href="<%=contextPath %>/updateForm.bo?no=<%= b.getBoardNo() %>" class="btn btn-warning btn-sm">수정하기</a>
-	            <a href="" class="btn btn-danger btn-sm">삭제하기</a>
+	            <% if(at == null){ %>
+	            	<a href="<%=contextPath %>/delete.bo?no=<%= b.getBoardNo() %>" class="btn btn-danger btn-sm">삭제하기</a>
+				<% } else{ %>
+					<a href="<%=contextPath %>/delete.bo?no=<%= b.getBoardNo() %>&atno=<%= at.getFileNo() %>" class="btn btn-danger btn-sm">삭제하기</a>
+				<%} %>
 			<% } %>
         </div>
         

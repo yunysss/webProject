@@ -139,8 +139,8 @@
 	      <!-- Modal body -->
 	      <div class="modal-body" align="center">
 	        
-	        <form action="<%= contextPath %>/updatePwd.me" method="post">
-	        	<input type="hidden" name="userId" value="<%=userId%>">
+	        <form action="<%= contextPath %>/updatePwd.me?userId=<%=userId%>" method="post">
+	        	<!-- <input type="hidden" name="userId" value="<%=userId%>"> -->
 	        	<!-- userId 숨겨서 넘겨주는 용도 -->
 	        	<table>
 	        		<tr>

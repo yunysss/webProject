@@ -154,6 +154,17 @@
 		  )
 	</entry>
 	
+	<entry key="deleteBoard">
+		UPDATE BOARD
+		   SET STATUS = 'N'
+		 WHERE BOARD_NO = ?
+	</entry>
+	<entry key="deleteAttachment">
+		UPDATE ATTACHMENT
+		   SET STATUS = 'N'
+		 WHERE REF_BNO = ?
+	</entry>
+	
 	<entry key="insertThBoard">
 		INSERT
 		  INTO BOARD
