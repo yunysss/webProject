@@ -108,6 +108,26 @@ public class BoardService {
 		return result1 * result2;
 	}
 	
+	public int deleteBoard(int boardNo, String attachmentNo) {
+		Connection conn = getConnection();
+		int result1 = new BoardDao().deleteBoard(conn, boardNo);
+		
+		int result2 = 1;
+		if(attachmentNo != null) {
+			result2 = new BoardDao().deleteAttachment(conn, boardNo);
+		}
+		
+		if(result1 > 0 && result2 > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result1 * result2;
+	}
+	
 	public int insertThumbnailBoard(Board b, ArrayList<Attachment> list) {
 		Connection conn = getConnection();
 		
