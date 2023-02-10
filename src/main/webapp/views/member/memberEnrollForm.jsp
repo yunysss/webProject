@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,14 +20,13 @@
 </head>
 <body>
 
-	<%@ include file="../common/menubar.jsp" %>
-	<!-- include된 jsp에 선언한 변수도 사용 가능 ex) contextPath-->
+	<jsp:include page="../common/menubar.jsp"/>
 
     <div class="outer">
         <br>
         <h2 align="center">회원가입</h2>
 
-        <form action="<%= contextPath %>/insert.me" method="post" id="enroll-form">
+        <form action="insert.me" method="post" id="enroll-form">
 
             <table>
 
@@ -112,7 +112,7 @@
     		const $idInput = $("#enroll-form input[name=userId]");
     		
     		$.ajax({
-    			url:"<%=contextPath%>/idCheck.me",
+    			url:"idCheck.me",
     			data:{checkId:$idInput.val()},
     			success:function(result){
     				if(result == "NNNNN"){ // 사용불가능

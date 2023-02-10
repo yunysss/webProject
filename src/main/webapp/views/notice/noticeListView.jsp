@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, com.br.notice.model.vo.Notice" %>
-<%
-	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,22 +23,22 @@
 </head>
 <body>
 
-	<%@ include file="../common/menubar.jsp" %>
+	<jsp:include page="../common/menubar.jsp"/>
 	
     <div class="outer">
         <br>
         <h2 align="center">공지사항</h2>
         <br>
         
-        <% if(loginUser != null && loginUser.getUserId().equals("admin")) { %>
-        <!-- && 이전의 결과가 false일 경우 뒤쪽 조건 검사는 시행되지 않음 => NullPointerException 발생 안함 -->
-        <!-- 현재 로그인한 사용자가 관리자일 경우 보여질 div -->
-        <div align="right" style="width:850px">
-        	<!-- <button onclick="location.href = '요청할url'">글작성</button> -->
-        	<a href="<%= contextPath %>/enrollForm.no" class="btn btn-secondary btn-sm">글작성</a>
-        	<br><br>
-        </div>
-		<% } %>
+        <c:if test="${ not empty loginUser and loginUser.userId eq 'admin' }">
+	        <!-- && 이전의 결과가 false일 경우 뒤쪽 조건 검사는 시행되지 않음 => NullPointerException 발생 안함 -->
+	        <!-- 현재 로그인한 사용자가 관리자일 경우 보여질 div -->
+	        <div align="right" style="width:850px">
+	        	<!-- <button onclick="location.href = '요청할url'">글작성</button> -->
+	        	<a href="enrollForm.no" class="btn btn-secondary btn-sm">글작성</a>
+	        	<br><br>
+	        </div>
+        </c:if>
 		
         <table class="list-area" align="center">
             <thead>
@@ -54,23 +51,26 @@
                 </tr>
             </thead>
             <tbody>
-			<% if(list.isEmpty()){ %>
-                <!-- case1. 공지글이 없을 경우 -->
-                <tr>
-                    <td colspan="5">존재하는 공지사항이 없습니다.</td>
-                </tr>
-			<% }else{ %>
-                <!-- case2. 공지글이 있을 경우 -->
-                <% for(Notice n : list){ %>
-                <tr>
-                    <td><%= n.getNoticeNo() %></td>
-                    <td><%= n.getNoticeTitle() %></td>
-                    <td><%= n.getNoticeWriter() %></td>
-                    <td><%= n.getCount() %></td>
-                    <td><%= n.getCreateDate() %></td>
-                </tr>
-                <% } %>
-            <% } %>
+            	<c:choose>
+            		<c:when test="${ empty list }">
+		                <!-- case1. 공지글이 없을 경우 -->
+		                <tr>
+		                    <td colspan="5">존재하는 공지사항이 없습니다.</td>
+		                </tr>
+                	</c:when>
+                	<c:otherwise>
+						<!-- case2. 공지글이 있을 경우 -->
+		                <c:forEach var="n" items="${ list }">
+			                <tr>
+			                    <td>${ n.noticeNo }</td>
+			                    <td>${ n.noticeTitle }</td>
+			                    <td>${ n.noticeWriter }</td>
+			                    <td>${ n.count }</td>
+			                    <td>${ n.createDate }</td>
+			                </tr>
+		                </c:forEach>
+            		</c:otherwise>
+            	</c:choose>
             </tbody>
         </table>
         <script>
@@ -82,7 +82,7 @@
         			// 요청할url?키=밸류&키=밸류...
         			// 요청시 전달값(키=밸류) => 쿼리스트링
         			
-        			location.href = "<%= contextPath %>/detail.no?no=" + num;
+        			location.href = "detail.no?no=" + num;
         		})
         	})
         </script>

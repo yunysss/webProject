@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, com.br.board.model.vo.Category" %>
-<%
-	ArrayList<Category> list = (ArrayList<Category>)request.getAttribute("list");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,14 +25,14 @@
 </head>
 <body>
 
-	<%@ include file="../common/menubar.jsp" %>
+	<jsp:include page="../common/menubar.jsp"/>
 
     <div class="outer" align="center">
         <br>
         <h2>일반게시판 작성하기</h2>
         <br>
 
-        <form id="enroll-form" action="<%= contextPath %>/insert.bo" method="post" enctype="multipart/form-data"> <!-- 파일넘기려면 enctype속성 필요 -->
+        <form id="enroll-form" action="insert.bo" method="post" enctype="multipart/form-data"> <!-- 파일넘기려면 enctype속성 필요 -->
 
             <table>
                 <tr>
@@ -43,9 +40,9 @@
                     <td width="500">
                         <select name="category">
                             <!-- db로부터 category테이블에 존재하는 값들 조회해와서 -->
-                            <% for(Category c : list){ %>
-                            	<option value="<%= c.getCategoryNo() %>"><%= c.getCategoryName() %></option>
-                            <% } %>
+                            <c:forEach var="c" items="${ list }">
+                            	<option value="${ c.categoryNo }">${ c.categoryName }</option>
+                            </c:forEach>
                         </select>
                     </td>
                 </tr>
